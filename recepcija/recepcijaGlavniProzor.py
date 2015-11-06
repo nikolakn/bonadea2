@@ -6,6 +6,7 @@ Created on Nov 5, 2015
 #import mysql.connector
 from PyQt4.QtGui import * # @UnusedWildImport
 from PyQt4.QtCore import * # @UnusedWildImport
+from database import dbhelpers
 
 class recepcijaProzor(QMainWindow):
     
