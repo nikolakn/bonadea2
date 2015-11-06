@@ -14,7 +14,7 @@ class recepcijaProzor(QMainWindow):
         self.initUI()
         
     def initUI(self):
-        self.setGeometry(50, 50, 900, 720)
+        self.setWindowState(Qt.WindowMaximized)
         self.setWindowTitle('Bonadea')
         self.show()
             

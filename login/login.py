@@ -9,6 +9,7 @@ import sys
 from PyQt4.QtGui import * # @UnusedWildImport
 from PyQt4.QtCore import * # @UnusedWildImport
 from recepcija import recepcijaGlavniProzor
+from ordinacija.ordinacijaProzor import ordinacijaProzor
 from database import dbhelpers
         
 
@@ -21,6 +22,8 @@ class LoginDialog(QDialog):
     def initUI(self):
         self.login = False   
         self.ime = ""
+        self.password = ""
+        self.tip = -1
         self.combo = QComboBox()
         self.combo.setEditable(True)
         self.dugme = QPushButton("Prijavi se", self)
@@ -43,7 +46,23 @@ class LoginDialog(QDialog):
         self.setWindowTitle('Bonadea - Login')
                 
     def loginclick(self):
-        self.login = True
+        self.ime = str(self.combo.currentText())
+        self.password = str(self.editor.text())
+        if (self.ime == "" or self.password==""):
+            self.login = False
+        else:    
+            baza = dbhelpers.db()
+            if(baza.open()):
+                rez = baza.login(self.ime,self.password)
+                baza.close()  
+                if(rez == -1):
+                    self.login = False
+                else:    
+                    self.tip = rez    
+                    self.login = True
+            else:
+                #ispisati obavestenje da ne moze da se konektuje na bazu
+                self.login = False
         self.close()
             
 def main():
@@ -52,11 +71,15 @@ def main():
     ex = LoginDialog()
     ex.exec()
     if (ex.login == True):
-        print("ulazi")
-        ex = recepcijaGlavniProzor.recepcijaProzor(True,"ime")
-        sys.exit(app.exec_())
+        if (ex.tip == 2):
+            ex = ordinacijaProzor(True,ex.ime)
+            sys.exit(app.exec_())
+        else:
+            ex = recepcijaGlavniProzor.recepcijaProzor(True,ex.ime)
+            sys.exit(app.exec_())    
+       
     else:   
-        pass 
+        print("pristup odbijen")
     sys.exit(app.exec_())
 
 if __name__ == '__main__':

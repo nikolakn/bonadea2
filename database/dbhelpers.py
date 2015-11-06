@@ -14,11 +14,10 @@ class db(object):
         '''
         Constructor
         '''
-
         
     def open(self):
         try:   
-            self.cnx = mysql.connector.connect(user='root', password='ni185859',
+            self.cnx = mysql.connector.connect(user='root', password='proba',
                               host='192.168.0.19',
                               database='bonadea')
             self.cursor = self.cnx.cursor()
@@ -32,64 +31,30 @@ class db(object):
     def close(self):
         self.cursor.close()
         self.cnx.close()    
+        
     def osobljeList(self):
         data = []
         data.append("")
-        cursor = self.cnx.cursor()
-        cursor.execute("SELECT * FROM osoblje")
-        row = cursor.fetchone()
+        self.cursor.execute("SELECT * FROM osoblje")
+        row = self.cursor.fetchone()
         while row is not None:
             data.append(row[5])
-            row = cursor.fetchone()   
+            row = self.cursor.fetchone()   
         return data
     
-    
-    
+    def login(self,ime,password):
+        self.cursor.execute("SELECT * FROM osoblje WHERE UNAME='"+ime+"'")
+        rows = self.cursor.fetchall()
+        if (self.cursor.rowcount != 1):
+            return -1
+        sifra = rows[0][6]
+        pristup = rows[0][2]
+        if(sifra != password):
+            return -1
+        return pristup
 
 
-'''
-def query_with_fetchone():
-    try:
-        dbconfig = read_db_config()
-        conn = MySQLConnection(**dbconfig)
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM books")
- 
-        row = cursor.fetchone()
- 
-        while row is not None:
-            print(row)
-            row = cursor.fetchone()
- 
-    except Error as e:
-        print(e)
- 
-    finally:
-        cursor.close()
-        conn.close()
-'''
 
-'''
-def query_with_fetchall():
-    try:
-        dbconfig = read_db_config()
-        conn = MySQLConnection(**dbconfig)
-        cursor = conn.cursor()
-        cursor.execute("SELECT * FROM books")
-        rows = cursor.fetchall()
- 
-        print('Total Row(s):', cursor.rowcount)
-        for row in rows:
-            print(row)
- 
-    except Error as e:
-        print(e)
- 
-    finally:
-        cursor.close()
-        conn.close()
-        
-'''
 
 '''
 def insert_book(title, isbn):
