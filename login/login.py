@@ -35,8 +35,7 @@ class LoginDialog(QDialog):
             QMessageBox.about(self,"Greska","Greska baza nije dostupna,proverite mrezu.");
             self.login = False   
             self.greska = True 
-            sys.exit(0)
-            
+            sys.exit(0)            
             
         self.combo = QComboBox()
         self.combo.setEditable(True)
@@ -53,7 +52,6 @@ class LoginDialog(QDialog):
         layout.addWidget(self.editor)
         layout.addWidget(self.dugme)
         self.setLayout(layout)
-        #self.setGeometry(50, 50, 900, 720)
         self.setWindowTitle('Bonadea - Login')
     
     def loginclick(self):
@@ -90,8 +88,7 @@ def main():
             sys.exit(app.exec_())
         else:
             ex = recepcijaGlavniProzor.recepcijaProzor(True,ex.ime)
-            sys.exit(app.exec_())    
-       
+            sys.exit(app.exec_())         
     else:   
         print("pristup odbijen")
     sys.exit(app.exec_())
