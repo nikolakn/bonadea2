@@ -20,21 +20,32 @@ class LoginDialog(QDialog):
         self.initUI()
         
     def initUI(self):
-        self.login = False   
+        self.setWindowIcon(QIcon('../images/Pill.ico'))
+        self.login = False  
+        self.greska = False 
         self.ime = ""
         self.password = ""
         self.tip = -1
+        data=[]
+        baza = dbhelpers.db()
+        if(baza.open()):
+            data = baza.osobljeList()
+            baza.close()  
+        else:
+            QMessageBox.about(self,"Greska","Greska baza nije dostupna,proverite mrezu.");
+            self.login = False   
+            self.greska = True 
+            sys.exit(0)
+            
+            
         self.combo = QComboBox()
         self.combo.setEditable(True)
         self.dugme = QPushButton("Prijavi se", self)
         self.dugme.clicked.connect(self.loginclick)  
         self.editor = QLineEdit()
         self.editor.setEchoMode(QLineEdit.Password)
-        data=[]
-        baza = dbhelpers.db()
-        if(baza.open()):
-            data = baza.osobljeList()
-        baza.close()    
+
+          
         model = QStringListModel(data, self.combo)
         self.combo.setModel(model)
         layout = QVBoxLayout()
@@ -44,7 +55,7 @@ class LoginDialog(QDialog):
         self.setLayout(layout)
         #self.setGeometry(50, 50, 900, 720)
         self.setWindowTitle('Bonadea - Login')
-                
+    
     def loginclick(self):
         self.ime = str(self.combo.currentText())
         self.password = str(self.editor.text())
@@ -57,12 +68,15 @@ class LoginDialog(QDialog):
                 baza.close()  
                 if(rez == -1):
                     self.login = False
+                    QMessageBox.about(self, "Greska", "Pogresno ime ili sifra.")
                 else:    
                     self.tip = rez    
                     self.login = True
             else:
                 #ispisati obavestenje da ne moze da se konektuje na bazu
+                QMessageBox.about(self, "Greska", "Greska baza nije dostupna,proverite mrezu.")
                 self.login = False
+                sys.exit(0)
         self.close()
             
 def main():

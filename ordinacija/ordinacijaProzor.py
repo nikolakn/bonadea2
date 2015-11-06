@@ -15,6 +15,7 @@ class ordinacijaProzor(QMainWindow):
         self.initUI(name)
         
     def initUI(self, nn):
+        self.setWindowIcon(QIcon('../images/Pill.ico'))
         self.setWindowState(Qt.WindowMaximized)
         self.setWindowTitle("Bonadea - "+nn)
         self.show()

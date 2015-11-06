@@ -14,6 +14,7 @@ class recepcijaProzor(QMainWindow):
         self.initUI()
         
     def initUI(self):
+        self.setWindowIcon(QIcon('../images/Pill.ico'))
         self.setWindowState(Qt.WindowMaximized)
         self.setWindowTitle('Bonadea')
         self.show()
