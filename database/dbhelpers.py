@@ -18,7 +18,7 @@ class db(object):
     def open(self):
         try:   
             self.cnx = mysql.connector.connect(user='root', password='proba',
-                              host='192.168.0.19',
+                              host='192.168.0.13',
                               database='bonadea')
             self.cursor = self.cnx.cursor()
             

@@ -57,6 +57,8 @@ class LoginDialog(QDialog):
     def loginclick(self):
         self.ime = str(self.combo.currentText())
         self.password = str(self.editor.text())
+        self.ime = "katalin"
+        self.password = "bonadea01"
         if (self.ime == "" or self.password==""):
             self.login = False
         else:    
